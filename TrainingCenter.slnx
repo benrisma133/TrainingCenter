@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="TrainingCenter.Presentation/TrainingCenter.Presentation.csproj" />
+  <Project Path="TrainingCenter.Repository/TrainingCenter.Repository.csproj" />
+  <Project Path="TrainingCenter.Service/TrainingCenter.Service.csproj" />
+</Solution>
