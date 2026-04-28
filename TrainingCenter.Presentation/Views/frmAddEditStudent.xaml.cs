@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media.Animation;
 using TrainingCenter.Service.Implementations;
 
 namespace TrainingCenter.Presentation.Views
@@ -9,13 +13,11 @@ namespace TrainingCenter.Presentation.Views
         private StudentService _service;
         public bool IsSaved { get; private set; } = false;
 
-        // Add mode
         public frmAddEditStudent()
         {
             InitializeComponent();
         }
 
-        // Edit mode
         public frmAddEditStudent(int studentId)
         {
             InitializeComponent();
@@ -28,7 +30,6 @@ namespace TrainingCenter.Presentation.Views
 
             if (_service != null)
             {
-                // Edit mode - fill fields
                 FormTitle.Text = "Edit Student";
                 FormSubtitle.Text = "Update the student details below";
                 SaveBtn.Content = "Update Student";
@@ -39,7 +40,6 @@ namespace TrainingCenter.Presentation.Views
                 TxtPhone.Text = _service.PhoneNumber ?? "";
                 DobPicker.SelectedDate = _service.DateOfBirth.ToDateTime(TimeOnly.MinValue);
 
-                // Set status combo
                 foreach (System.Windows.Controls.ComboBoxItem item in StatusCombo.Items)
                 {
                     if (item.Tag.ToString() == _service.Status)
@@ -51,51 +51,103 @@ namespace TrainingCenter.Presentation.Views
             }
         }
 
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
+        }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e) => Close();
+        private void CancelBtn_Click(object sender, RoutedEventArgs e) => Close();
+
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Validation
-            if (string.IsNullOrWhiteSpace(TxtFirstName.Text))
-            { MessageBox.Show("First name is required.", "Validation"); return; }
+            HideMessages();
 
-            if (string.IsNullOrWhiteSpace(TxtLastName.Text))
-            { MessageBox.Show("Last name is required.", "Validation"); return; }
-
-            if (string.IsNullOrWhiteSpace(TxtEmail.Text))
-            { MessageBox.Show("Email is required.", "Validation"); return; }
-
-            if (DobPicker.SelectedDate == null)
-            { MessageBox.Show("Date of birth is required.", "Validation"); return; }
-
-            var selectedStatus = (StatusCombo.SelectedItem as System.Windows.Controls.ComboBoxItem)?.Tag.ToString() ?? "Active";
+            var errors = Validate();
+            if (errors.Any())
+            {
+                ShowError(errors);
+                return;
+            }
 
             if (_service == null)
-            {
-                // Add mode - create new service instance
                 _service = new StudentService();
-            }
 
             _service.FirstName = TxtFirstName.Text.Trim();
             _service.LastName = TxtLastName.Text.Trim();
             _service.Email = TxtEmail.Text.Trim();
-            _service.PhoneNumber = string.IsNullOrWhiteSpace(TxtPhone.Text) ? null : TxtPhone.Text.Trim();
-            _service.DateOfBirth = DateOnly.FromDateTime(DobPicker.SelectedDate.Value);
-            _service.Status = selectedStatus;
+            _service.PhoneNumber = string.IsNullOrWhiteSpace(TxtPhone.Text)
+                                   ? null : TxtPhone.Text.Trim();
+            _service.DateOfBirth = DateOnly.FromDateTime(DobPicker.SelectedDate!.Value);
+            _service.Status = (StatusCombo.SelectedItem as System.Windows.Controls.ComboBoxItem)
+                                   ?.Tag.ToString() ?? "Active";
 
             bool success = _service.Save();
 
             if (success)
             {
                 IsSaved = true;
-                Close();
+                ShowSuccess();
             }
             else
             {
-                MessageBox.Show("Failed to save student. Please try again.", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowError(new List<string> { "• Failed to save. Please try again." });
             }
         }
 
-        private void CancelBtn_Click(object sender, RoutedEventArgs e)
-            => Close();
+        private List<string> Validate()
+        {
+            var errors = new List<string>();
+            int excludeId = _service?.StudentId ?? 0;
+
+            if (string.IsNullOrWhiteSpace(TxtFirstName.Text))
+                errors.Add("• First name is required.");
+
+            if (string.IsNullOrWhiteSpace(TxtLastName.Text))
+                errors.Add("• Last name is required.");
+
+            if (string.IsNullOrWhiteSpace(TxtEmail.Text))
+                errors.Add("• Email is required.");
+            else if (StudentService.IsExistByEmail(TxtEmail.Text.Trim(), excludeId))
+                errors.Add("• This email is already used by another student.");
+
+            if (!string.IsNullOrWhiteSpace(TxtPhone.Text) &&
+                StudentService.IsExistByPhone(TxtPhone.Text.Trim(), excludeId))
+                errors.Add("• This phone number is already used by another student.");
+
+            if (DobPicker.SelectedDate == null)
+                errors.Add("• Date of birth is required.");
+
+            return errors;
+        }
+
+        private void ShowError(List<string> errors)
+        {
+            ErrorText.Text = string.Join("\n", errors);
+            ErrorBox.Visibility = Visibility.Visible;
+            ErrorBox.BeginAnimation(OpacityProperty,
+                new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250)));
+        }
+
+        private void ShowSuccess()
+        {
+            SuccessBox.Visibility = Visibility.Visible;
+            SuccessBox.BeginAnimation(OpacityProperty,
+                new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250)));
+
+            var timer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(2)
+            };
+            timer.Tick += (s, e) => { timer.Stop(); Close(); };
+            timer.Start();
+        }
+
+        private void HideMessages()
+        {
+            ErrorBox.Visibility = Visibility.Collapsed;
+            SuccessBox.Visibility = Visibility.Collapsed;
+        }
     }
 }

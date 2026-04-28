@@ -166,5 +166,25 @@ namespace TrainingCenter.Service.Implementations
             repo.Save();
             return true;
         }
+
+        // ======================================================
+        // IsExistByEmail (public static)
+        // ======================================================
+        public static bool IsExistByEmail(string email, int excludeId = 0)
+        {
+            using var context = DbContextFactory.Create();
+            var repo = new StudentRepository(context);
+            return repo.IsExistByEmail(email, excludeId);
+        }
+
+        // ======================================================
+        // IsExistByPhone (public static)
+        // ======================================================
+        public static bool IsExistByPhone(string phone, int excludeId = 0)
+        {
+            using var context = DbContextFactory.Create();
+            var repo = new StudentRepository(context);
+            return repo.IsExistByPhone(phone, excludeId);
+        }
     }
 }

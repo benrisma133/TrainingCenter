@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Helpers/Colors.xaml"/>
                 <ResourceDictionary Source="/Helpers/Styles.xaml"/>
+                <ResourceDictionary Source="/Helpers/ComboBoxStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

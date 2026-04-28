@@ -9,33 +9,30 @@
              d:DesignHeight="100" d:DesignWidth="400">
 
     <UserControl.Resources>
-        <!-- Converter -->
         <local:PlaceholderVisibilityConverter x:Key="PlaceholderVisibilityConverter"/>
 
-        <!-- Smooth animations -->
         <Storyboard x:Key="ShakeAnimation">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
-                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0"    Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.05" Value="-10"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="10"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1"  Value="10"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="-10"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="10"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2"  Value="10"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
-        <!-- Smooth animations -->
         <Storyboard x:Key="FadeIn">
-            <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                       From="0" To="1" Duration="0:0:0.3"/>
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.3"/>
         </Storyboard>
 
         <Style x:Key="PlaceholderStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#9CA3AF"/>
+            <Setter Property="Foreground"       Value="#475569"/>
             <Setter Property="IsHitTestVisible" Value="False"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="12,0,0,0"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin"           Value="12,0,0,0"/>
+            <Setter Property="FontSize"         Value="14"/>
         </Style>
     </UserControl.Resources>
 
@@ -48,12 +45,12 @@
 
         <!-- Label -->
         <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,6">
-            <TextBlock x:Name="LabelText" 
-                   FontSize="13"
-                   FontWeight="Medium">
+            <TextBlock x:Name="LabelText"
+                       FontSize="13"
+                       FontWeight="Medium">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="#374151"/>
+                        <Setter Property="Foreground" Value="#94A3B8"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=Root, Path=IsValid}" Value="False">
                                 <Setter Property="Foreground" Value="#EF4444"/>
@@ -62,11 +59,11 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-            <TextBlock x:Name="AsteriskText" 
-                   Text=" *" 
-                   Foreground="#EF4444"
-                   FontSize="13"
-                   FontWeight="Medium">
+            <TextBlock x:Name="AsteriskText"
+                       Text=" *"
+                       Foreground="#EF4444"
+                       FontSize="13"
+                       FontWeight="Medium">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -82,34 +79,30 @@
 
         <!-- TextBox Container -->
         <Border x:Name="TextBoxBorder"
-            Grid.Row="1"
-            Background="White"
-            BorderThickness="1.5"
-            Height="44"
-            Cursor="IBeam">
+                Grid.Row="1"
+                Background="#252538"
+                BorderThickness="1.5"
+                Height="44"
+                Cursor="IBeam">
 
-            <!-- 🔴 ضروري جداً -->
             <Border.RenderTransform>
                 <TranslateTransform/>
             </Border.RenderTransform>
 
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="#E5E7EB"/>
+                    <Setter Property="BorderBrush" Value="#2D2D44"/>
                     <Setter Property="CornerRadius" Value="8"/>
                     <Style.Triggers>
-                        <!-- Hover state -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="#9CA3AF"/>
+                            <Setter Property="BorderBrush" Value="#3B4060"/>
                         </Trigger>
-                        <!-- Focused state -->
                         <DataTrigger Binding="{Binding ElementName=InputBox, Path=IsFocused}" Value="True">
-                            <Setter Property="BorderBrush" Value="#3B82F6"/>
+                            <Setter Property="BorderBrush"     Value="#3B82F6"/>
                             <Setter Property="BorderThickness" Value="2"/>
                         </DataTrigger>
-                        <!-- Invalid state -->
                         <DataTrigger Binding="{Binding ElementName=Root, Path=IsValid}" Value="False">
-                            <Setter Property="BorderBrush" Value="#EF4444"/>
+                            <Setter Property="BorderBrush"     Value="#EF4444"/>
                             <Setter Property="BorderThickness" Value="2"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -119,8 +112,8 @@
             <Grid>
                 <!-- Placeholder -->
                 <TextBlock x:Name="PlaceholderText"
-                      Style="{StaticResource PlaceholderStyle}"
-                      Text="Enter text...">
+                           Style="{StaticResource PlaceholderStyle}"
+                           Text="Enter text...">
                     <TextBlock.Visibility>
                         <MultiBinding Converter="{StaticResource PlaceholderVisibilityConverter}">
                             <Binding ElementName="InputBox" Path="Text"/>
@@ -129,27 +122,27 @@
                     </TextBlock.Visibility>
                 </TextBlock>
 
-                <!-- Actual TextBox -->
+                <!-- TextBox -->
                 <TextBox x:Name="InputBox"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    VerticalContentAlignment="Center"
-                    Padding="12,0"
-                    FontSize="14"
-                    Foreground="#1F2937"
-                    CaretBrush="#3B82F6"
-                    TextChanged="InputBox_TextChanged"
-                    GotFocus="InputBox_GotFocus"
-                    LostFocus="InputBox_LostFocus">
+                         Background="Transparent"
+                         BorderThickness="0"
+                         VerticalContentAlignment="Center"
+                         Padding="12,0"
+                         FontSize="14"
+                         Foreground="#F1F5F9"
+                         CaretBrush="#3B82F6"
+                         TextChanged="InputBox_TextChanged"
+                         GotFocus="InputBox_GotFocus"
+                         LostFocus="InputBox_LostFocus">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="TextBox">
-                                        <ScrollViewer x:Name="PART_ContentHost" 
-                                                Focusable="False"
-                                                HorizontalScrollBarVisibility="Hidden"
-                                                VerticalScrollBarVisibility="Hidden"/>
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                      Focusable="False"
+                                                      HorizontalScrollBarVisibility="Hidden"
+                                                      VerticalScrollBarVisibility="Hidden"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -161,11 +154,11 @@
 
         <!-- Validation Message -->
         <TextBlock x:Name="ValidationMessage"
-               Grid.Row="2"
-               Foreground="#EF4444"
-               FontSize="12"
-               Margin="0,6,0,0"
-               TextWrapping="Wrap">
+                   Grid.Row="2"
+                   Foreground="#EF4444"
+                   FontSize="12"
+                   Margin="0,6,0,0"
+                   TextWrapping="Wrap">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Collapsed"/>
