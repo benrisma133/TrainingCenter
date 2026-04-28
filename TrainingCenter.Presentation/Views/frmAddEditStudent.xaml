@@ -3,142 +3,228 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:inputs="clr-namespace:TrainingCenter.Presentation.Controls"
         Title="Add Student"
-        Width="520" Height="620"
+        Width="520" Height="660"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="{StaticResource AppBackgroundBrush}"
+        Background="Transparent"
+        WindowStyle="None"
+        AllowsTransparency="True"
         Loaded="Window_Loaded">
 
-    <Grid Margin="32">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid Margin="8">
+        <Border CornerRadius="16"
+                Background="{StaticResource CardBackgroundBrush}"
+                BorderBrush="{StaticResource BorderDefaultBrush}"
+                BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" BlurRadius="20"
+                                  ShadowDepth="0" Opacity="0.5"/>
+            </Border.Effect>
 
-        <!-- HEADER -->
-        <StackPanel Grid.Row="0">
-            <TextBlock x:Name="FormTitle"
-                       Text="Add New Student"
-                       FontSize="22"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource TextPrimaryBrush}"/>
-            <TextBlock x:Name="FormSubtitle"
-                       Text="Fill in the details below to add a new student"
-                       FontSize="13"
-                       Foreground="{StaticResource TextMutedBrush}"
-                       Margin="0,6,0,0"/>
-        </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
 
-        <!-- FORM FIELDS -->
-        <ScrollViewer Grid.Row="2"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled">
-            <StackPanel>
+                <!-- HEADER -->
+                <Border Grid.Row="0"
+                        CornerRadius="16,16,0,0"
+                        Background="{StaticResource SidebarBackgroundBrush}"
+                        MouseDown="Header_MouseDown">
+                    <Grid Margin="16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                <!-- First Name + Last Name -->
-                <Grid Margin="0,0,0,16">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="16"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Background="{StaticResource AccentBrush}"
+                                    CornerRadius="8"
+                                    Width="30" Height="30"
+                                    Margin="0,0,10,0">
+                                <TextBlock Text="S"
+                                           FontSize="14" FontWeight="Bold"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock x:Name="FormTitle"
+                                       Text="Add New Student"
+                                       FontSize="16" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
 
-                    <inputs:ModernInput x:Name="TxtFirstName"
-                                        Grid.Column="0"
-                                        Label="First Name"
-                                        Placeholder="Ahmed"/>
+                        <Button Grid.Column="1"
+                                Width="30" Height="30"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="CloseBtn_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd"
+                                            Background="Transparent"
+                                            CornerRadius="8">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background"
+                                                    Value="{StaticResource ErrorLightBrush}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Viewbox Width="14" Height="14">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="M18 6L6 18M6 6L18 18"
+                                          Stroke="{StaticResource TextSecondaryBrush}"
+                                          StrokeThickness="2"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                    </Grid>
+                </Border>
 
-                    <inputs:ModernInput x:Name="TxtLastName"
-                                        Grid.Column="2"
-                                        Label="Last Name"
-                                        Placeholder="Hassan"/>
-                </Grid>
+                <!-- CONTENT -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              Padding="24,16">
+                    <StackPanel>
 
-                <!-- Email -->
-                <inputs:ModernInput x:Name="TxtEmail"
-                                    Label="Email Address"
-                                    Placeholder="ahmed@example.com"
-                                    Margin="0,0,0,16"/>
+                        <!-- Subtitle -->
+                        <TextBlock x:Name="FormSubtitle"
+                                   Text="Fill in the details below to add a new student"
+                                   FontSize="12"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   Margin="0,0,0,16"/>
 
-                <!-- Phone -->
-                <inputs:ModernInput x:Name="TxtPhone"
-                                    Label="Phone Number"
-                                    Placeholder="+212 6XX XXX XXX"
-                                    Margin="0,0,0,16"/>
+                        <!-- ERROR BOX -->
+                        <Border x:Name="ErrorBox"
+                                Background="{StaticResource ErrorLightBrush}"
+                                BorderBrush="{StaticResource ErrorBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="14,10"
+                                Margin="0,0,0,16"
+                                Visibility="Collapsed">
+                            <StackPanel>
+                                <TextBlock Text="⚠️ Please fix the following errors:"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource ErrorBrush}"
+                                           FontSize="13"
+                                           Margin="0,0,0,6"/>
+                                <TextBlock x:Name="ErrorText"
+                                           Foreground="{StaticResource ErrorBrush}"
+                                           FontSize="12"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
 
-                <!-- Date of Birth -->
-                <StackPanel Margin="0,0,0,16">
-                    <TextBlock Text="Date of Birth"
-                               FontSize="13"
-                               FontWeight="SemiBold"
-                               Foreground="{StaticResource TextSecondaryBrush}"
-                               Margin="0,0,0,8"/>
-                    <Border Background="{StaticResource InputBackgroundBrush}"
-                            BorderBrush="{StaticResource BorderDefaultBrush}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Height="46">
-                        <DatePicker x:Name="DobPicker"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Foreground="{StaticResource TextPrimaryBrush}"
-                                    FontSize="14"
-                                    VerticalAlignment="Center"
-                                    Padding="8,0"/>
-                    </Border>
+                        <!-- SUCCESS BOX -->
+                        <Border x:Name="SuccessBox"
+                                Background="{StaticResource SuccessLightBrush}"
+                                BorderBrush="{StaticResource SuccessBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="14,10"
+                                Margin="0,0,0,16"
+                                Visibility="Collapsed">
+                            <StackPanel>
+                                <TextBlock Text="✓ Success!"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource SuccessBrush}"
+                                           FontSize="13"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="Student saved successfully."
+                                           Foreground="{StaticResource SuccessBrush}"
+                                           FontSize="12"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- First Name + Last Name -->
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <inputs:ModernInput x:Name="TxtFirstName"
+                                                Grid.Column="0"
+                                                Label="First Name"
+                                                Placeholder="Ahmed"/>
+                            <inputs:ModernInput x:Name="TxtLastName"
+                                                Grid.Column="2"
+                                                Label="Last Name"
+                                                Placeholder="Hassan"/>
+                        </Grid>
+
+                        <!-- Email -->
+                        <inputs:ModernInput x:Name="TxtEmail"
+                                            Label="Email Address"
+                                            Placeholder="ahmed@example.com"
+                                            Margin="0,0,0,14"/>
+
+                        <!-- Phone -->
+                        <inputs:ModernInput x:Name="TxtPhone"
+                                            Label="Phone Number (optional)"
+                                            Placeholder="+212 6XX XXX XXX"
+                                            Margin="0,0,0,14"/>
+
+                        <!-- Date of Birth -->
+                        <StackPanel Margin="0,0,0,14">
+                            <TextBlock Text="Date of Birth"
+                                       FontSize="13" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,0,0,6"/>
+                            <DatePicker x:Name="DobPicker"
+                                        Style="{StaticResource DarkDatePicker}"/>
+                        </StackPanel>
+
+                        <!-- Status -->
+                        <StackPanel Margin="0,0,0,14">
+                            <TextBlock Text="Status"
+                                       FontSize="13" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,0,0,6"/>
+                            <ComboBox x:Name="StatusCombo"
+                                      Style="{StaticResource DarkComboBox}"
+                                      ItemContainerStyle="{StaticResource DarkComboBoxItem}">
+                                <ComboBoxItem Content="Active"    Tag="Active"/>
+                                <ComboBoxItem Content="Suspended" Tag="Suspended"/>
+                                <ComboBoxItem Content="Graduated" Tag="Graduated"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- FOOTER BUTTONS -->
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,20,0">
+
+                    <Button Content="Cancel"
+                            Width="120" Height="40"
+                            Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,10,0"
+                            Click="CancelBtn_Click"/>
+
+                    <Button x:Name="SaveBtn"
+                            Content="Save Student"
+                            Width="140" Height="40"
+                            Style="{StaticResource PrimaryButton}"
+                            Click="SaveBtn_Click"/>
                 </StackPanel>
 
-                <!-- Status -->
-                <StackPanel Margin="0,0,0,16">
-                    <TextBlock Text="Status"
-                               FontSize="13"
-                               FontWeight="SemiBold"
-                               Foreground="{StaticResource TextSecondaryBrush}"
-                               Margin="0,0,0,8"/>
-                    <Border Background="{StaticResource InputBackgroundBrush}"
-                            BorderBrush="{StaticResource BorderDefaultBrush}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Height="46">
-                        <ComboBox x:Name="StatusCombo"
-                                  Background="Transparent"
-                                  BorderThickness="0"
-                                  Foreground="{StaticResource TextPrimaryBrush}"
-                                  FontSize="14"
-                                  VerticalAlignment="Center"
-                                  Padding="8,0">
-                            <ComboBoxItem Content="Active" Tag="Active"/>
-                            <ComboBoxItem Content="Suspended" Tag="Suspended"/>
-                            <ComboBoxItem Content="Graduated" Tag="Graduated"/>
-                        </ComboBox>
-                    </Border>
-                </StackPanel>
-
-            </StackPanel>
-        </ScrollViewer>
-
-        <!-- BUTTONS -->
-        <Grid Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="16"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0"
-                    Content="Cancel"
-                    Style="{StaticResource SecondaryButton}"
-                    Click="CancelBtn_Click"/>
-
-            <Button Grid.Column="2"
-                    x:Name="SaveBtn"
-                    Content="Save Student"
-                    Style="{StaticResource PrimaryButton}"
-                    Click="SaveBtn_Click"/>
-        </Grid>
-
+            </Grid>
+        </Border>
     </Grid>
 </Window>

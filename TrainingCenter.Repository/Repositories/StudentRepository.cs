@@ -82,5 +82,29 @@ namespace TrainingCenter.Repository.Repositories
         {
             _context.SaveChanges();
         }
+
+        // ======================================================
+        // IsExistByEmail
+        // ------------------------------------------------------
+        // Returns true if another student has the same email.
+        // Excludes the current student when updating.
+        // ======================================================
+        public bool IsExistByEmail(string email, int excludeId = 0)
+        {
+            return _context.Students
+                           .Any(s => s.Email == email && s.StudentId != excludeId);
+        }
+
+        // ======================================================
+        // IsExistByPhone
+        // ------------------------------------------------------
+        // Returns true if another student has the same phone.
+        // Excludes the current student when updating.
+        // ======================================================
+        public bool IsExistByPhone(string phone, int excludeId = 0)
+        {
+            return _context.Students
+                           .Any(s => s.PhoneNumber == phone && s.StudentId != excludeId);
+        }
     }
 }
