@@ -4,74 +4,366 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="TrainingCenter - Style Test"
-        Height="500" Width="800"
+        Title="Training Center"
+        Height="700" Width="1200"
+        MinHeight="650" MinWidth="1000"
+        WindowStartupLocation="CenterScreen"
         Background="{StaticResource AppBackgroundBrush}"
-        WindowStartupLocation="CenterScreen">
+        Loaded="MainWindow_Loaded"
+        SizeChanged="Window_SizeChanged">
 
-    <StackPanel Margin="40" VerticalAlignment="Center">
+    <Grid>
 
-        <!-- Title -->
-        <TextBlock Text="Style Test"
-                   FontSize="28"
-                   FontWeight="Bold"
-                   Foreground="{StaticResource TextPrimaryBrush}"
-                   Margin="0,0,0,30"/>
+        <!-- SIDEBAR -->
+        <Border x:Name="Sidebar"
+                Width="260"
+                HorizontalAlignment="Left"
+                Background="{StaticResource SidebarBackgroundBrush}"
+                ClipToBounds="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <!-- Buttons Row -->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <!-- HEADER ROW: Logo + Hamburger -->
+                <Border Grid.Row="0"
+                        BorderBrush="{StaticResource BorderDefaultBrush}"
+                        BorderThickness="0,0,0,1">
+                    <Grid Margin="12,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            <Button Content="Primary Button"
-                    Style="{StaticResource PrimaryButton}"
-                    Width="160"
-                    Margin="0,0,12,0"/>
+                        <!-- Logo -->
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Grid.Column="0">
+                            <Border x:Name="LogoBox"
+                                    Background="{StaticResource AccentBrush}"
+                                    CornerRadius="8"
+                                    Width="36" Height="36"
+                                    Margin="0,0,10,0">
+                                <TextBlock Text="TC"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel x:Name="LogoTextStack" VerticalAlignment="Center">
+                                <TextBlock Text="TrainingCenter"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Management System"
+                                           FontSize="10"
+                                           Foreground="{StaticResource TextMutedBrush}"/>
+                            </StackPanel>
+                        </StackPanel>
 
-            <Button Content="Secondary Button"
-                    Style="{StaticResource SecondaryButton}"
-                    Width="160"
-                    Margin="0,0,12,0"/>
+                        <!-- Hamburger Button -->
+                        <Button x:Name="HamburgerBtn"
+                                Grid.Column="1"
+                                Width="34" Height="34"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="HamburgerBtn_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="8">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background"
+                                                    Value="{StaticResource MenuHoverBrush}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Viewbox Width="18" Height="18">
+                                <Canvas Width="24" Height="24">
+                                    <Path x:Name="HamburgerPath"
+                                          Stroke="{StaticResource TextSecondaryBrush}"
+                                          StrokeThickness="2"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round"
+                                          Data="M4 6H20 M4 12H20 M4 18H20"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                    </Grid>
+                </Border>
 
-            <Button Content="Danger Button"
-                    Style="{StaticResource DangerButton}"
-                    Width="160"/>
+                <!-- MENU ITEMS -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="10,16">
 
-        </StackPanel>
+                        <!-- Dashboard -->
+                        <Button x:Name="BtnDashboard"
+                                Style="{StaticResource MenuButton}"
+                                Click="BtnDashboard_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Width="18" Height="18"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"
+                                              StrokeLineJoin="Round"/>
+                                        <Path Data="M9 22V12H15V22"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="1"
+                                           Text="Dashboard"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Margin="10,0,0,0"/>
+                            </Grid>
+                        </Button>
 
-        <!-- Card Test -->
-        <Border Style="{StaticResource CardBorder}"
-                Effect="{StaticResource CardShadow}"
-                Margin="0,10">
-            <StackPanel>
-                <TextBlock Text="Card Title"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimaryBrush}"
-                           Margin="0,0,0,8"/>
-                <TextBlock Text="This is a card component with dark background and border."
-                           FontSize="14"
-                           Foreground="{StaticResource TextSecondaryBrush}"/>
-            </StackPanel>
+                        <!-- Students -->
+                        <Button x:Name="BtnStudents"
+                                Style="{StaticResource MenuButton}"
+                                Click="BtnStudents_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Width="18" Height="18"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Path Data="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="1"
+                                           Text="Students"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Margin="10,0,0,0"/>
+                            </Grid>
+                        </Button>
+
+                        <!-- Courses -->
+                        <Button x:Name="BtnCourses"
+                                Style="{StaticResource MenuButton}"
+                                Click="BtnCourses_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Width="18" Height="18"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"
+                                              StrokeStartLineCap="Round"/>
+                                        <Path Data="M6.5 2H20V22H6.5A2.5 2.5 0 0 1 4 19.5V4.5A2.5 2.5 0 0 1 6.5 2Z"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"
+                                              StrokeLineJoin="Round"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="1"
+                                           Text="Courses"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Margin="10,0,0,0"/>
+                            </Grid>
+                        </Button>
+
+                        <!-- Instructors -->
+                        <Button x:Name="BtnInstructors"
+                                Style="{StaticResource MenuButton}"
+                                Click="BtnInstructors_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Width="18" Height="18"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"/>
+                                        <Path Data="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="1"
+                                           Text="Instructors"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Margin="10,0,0,0"/>
+                            </Grid>
+                        </Button>
+
+                        <!-- Enrollments -->
+                        <Button x:Name="BtnEnrollments"
+                                Style="{StaticResource MenuButton}"
+                                Click="BtnEnrollments_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Width="18" Height="18"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M9 11L12 14L22 4"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                              StrokeLineJoin="Round"/>
+                                        <Path Data="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"
+                                              StrokeStartLineCap="Round"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="1"
+                                           Text="Enrollments"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Margin="10,0,0,0"/>
+                            </Grid>
+                        </Button>
+
+                        <!-- Separator -->
+                        <Border Height="1"
+                                Background="{StaticResource BorderDefaultBrush}"
+                                Margin="0,12"/>
+
+                        <!-- Settings -->
+                        <Button x:Name="BtnSettings"
+                                Style="{StaticResource MenuButton}"
+                                Click="BtnSettings_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Width="18" Height="18"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"/>
+                                        <Path Data="M13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 10.6022 2 10.2346 2.15224C9.74457 2.35523 9.35522 2.74458 9.15223 3.23463C9.05957 3.45834 9.0233 3.7185 9.00911 4.09799C8.98826 4.65568 8.70226 5.17189 8.21894 5.45093C7.73564 5.72996 7.14559 5.71954 6.65219 5.45876C6.31645 5.2813 6.07301 5.18262 5.83294 5.15102C5.30704 5.08178 4.77518 5.22429 4.35436 5.5472C4.03874 5.78938 3.80577 6.1929 3.33983 6.99993C2.87389 7.80697 2.64092 8.21048 2.58899 8.60491C2.51976 9.1308 2.66227 9.66266 2.98518 10.0835C3.13256 10.2756 3.3397 10.437 3.66119 10.639C4.1338 10.936 4.43789 11.4419 4.43786 12C4.43783 12.5581 4.13375 13.0639 3.66118 13.3608C3.33965 13.5629 3.13248 13.7244 2.98508 13.9165C2.66217 14.3373 2.51966 14.8691 2.5889 15.395C2.64082 15.7894 2.87379 16.193 3.33973 17C3.80568 17.807 4.03865 18.2106 4.35426 18.4527C4.77508 18.7756 5.30694 18.9181 5.83284 18.8489C6.07289 18.8173 6.31632 18.7186 6.65204 18.5412C7.14547 18.2804 7.73556 18.27 8.2189 18.549C8.70224 18.8281 8.98826 19.3443 9.00911 19.9021C9.02331 20.2815 9.05957 20.5417 9.15223 20.7654C9.35522 21.2554 9.74457 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8477 20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.902C15.0117 19.3443 15.2977 18.8281 15.781 18.549C16.2643 18.2699 16.8544 18.2804 17.3479 18.5412C17.6836 18.7186 17.927 18.8172 18.167 18.8488C18.6929 18.9181 19.2248 18.7756 19.6456 18.4527C19.9612 18.2105 20.1942 17.807 20.6601 16.9999C21.1261 16.1929 21.3591 15.7894 21.411 15.395C21.4802 14.8691 21.3377 14.3372 21.0148 13.9164C20.8674 13.7243 20.6602 13.5628 20.3387 13.3608C19.8662 13.0639 19.5621 12.558 19.5621 11.9999C19.5621 11.4418 19.8662 10.9361 20.3387 10.6392C20.6603 10.4371 20.8675 10.2757 21.0149 10.0835C21.3378 9.66273 21.4803 9.13087 21.4111 8.60497C21.3592 8.21055 21.1262 7.80697 20.6602 6.99993C20.1942 6.19289 19.9613 5.78938 19.6456 5.5472C19.2248 5.22429 18.6929 5.08178 18.167 5.15102C17.927 5.18262 17.6836 5.2813 17.3479 5.45876C16.8544 5.71954 16.2643 5.72996 15.781 5.45093C15.2977 5.17189 15.0117 4.65568 14.9909 4.09799C14.9767 3.7185 14.9404 3.45834 14.8477 3.23463C14.6448 2.74458 14.2554 2.35523 13.7654 2.15224Z"
+                                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.8" Fill="Transparent"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="1"
+                                           Text="Settings"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Margin="10,0,0,0"/>
+                            </Grid>
+                        </Button>
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- PROFILE SECTION -->
+                <Border Grid.Row="2"
+                        BorderBrush="{StaticResource BorderDefaultBrush}"
+                        BorderThickness="0,1,0,0"
+                        Padding="12,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Background="{StaticResource AccentLightBrush}"
+                                CornerRadius="20"
+                                Width="36" Height="36"
+                                HorizontalAlignment="Center">
+                            <TextBlock Text="A"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <StackPanel x:Name="ProfileTextStack"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Margin="10,0,0,0">
+                            <TextBlock Text="Admin"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="Administrator"
+                                       FontSize="11"
+                                       Foreground="{StaticResource TextMutedBrush}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </Grid>
         </Border>
 
-        <!-- Status Colors -->
-        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-            <Border Background="{StaticResource SuccessBrush}" 
-                    CornerRadius="6" Padding="12,6" Margin="0,0,8,0">
-                <TextBlock Text="Success" Foreground="White" FontWeight="SemiBold"/>
-            </Border>
-            <Border Background="{StaticResource WarningBrush}" 
-                    CornerRadius="6" Padding="12,6" Margin="0,0,8,0">
-                <TextBlock Text="Warning" Foreground="White" FontWeight="SemiBold"/>
-            </Border>
-            <Border Background="{StaticResource ErrorBrush}" 
-                    CornerRadius="6" Padding="12,6" Margin="0,0,8,0">
-                <TextBlock Text="Error" Foreground="White" FontWeight="SemiBold"/>
-            </Border>
-            <Border Background="{StaticResource AccentBrush}" 
-                    CornerRadius="6" Padding="12,6">
-                <TextBlock Text="Info" Foreground="White" FontWeight="SemiBold"/>
-            </Border>
-        </StackPanel>
+        <!-- MAIN CONTENT -->
+        <Grid x:Name="MainContent" Margin="260,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-    </StackPanel>
+            <!-- HEADER -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource HeaderBackgroundBrush}"
+                    BorderBrush="{StaticResource BorderDefaultBrush}"
+                    BorderThickness="0,0,0,1">
+                <Grid Margin="24,0">
+                    <TextBlock x:Name="PageTitle"
+                               Text="Dashboard"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- PAGE CONTENT -->
+            <ContentPresenter x:Name="PageContent" Grid.Row="1"/>
+        </Grid>
+
+    </Grid>
 </Window>
