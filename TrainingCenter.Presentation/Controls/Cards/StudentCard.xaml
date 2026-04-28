@@ -4,14 +4,15 @@
              x:Name="Root">
 
 	<Border x:Name="CardBorder"
-        Background="{StaticResource CardBackgroundBrush}"
-        BorderBrush="{StaticResource BorderDefaultBrush}"
-        BorderThickness="1"
-        CornerRadius="12"
-        Padding="20"
-        HorizontalAlignment="Stretch"
-        Margin="0"
-        Cursor="Hand">
+            Background="{StaticResource CardBackgroundBrush}"
+            BorderBrush="{StaticResource BorderDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="12"
+            Padding="20"
+            HorizontalAlignment="Stretch"
+            Margin="0"
+            Cursor="Hand"
+            MouseLeftButtonUp="CardBorder_Click">
 
         <Border.Effect>
             <DropShadowEffect Color="#000000" BlurRadius="15"

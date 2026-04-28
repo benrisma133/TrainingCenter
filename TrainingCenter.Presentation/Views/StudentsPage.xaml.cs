@@ -59,10 +59,44 @@ namespace TrainingCenter.Presentation.Views
                 card.HorizontalAlignment = HorizontalAlignment.Stretch;
                 card.OnEdit += Card_OnEdit;
                 card.OnDelete += Card_OnDelete;
+                // inside RenderCards, after card.OnDelete
+                card.OnView += (s, id) => ShowDetail(id);
                 CardsPanel.Children.Add(card);
             }
 
             UpdateColumns();
+        }
+
+        private void ShowDetail(int studentId)
+        {
+            DetailView.OnBack -= DetailView_OnBack;
+            DetailView.OnEdit -= DetailView_OnEdit;
+            DetailView.OnBack += DetailView_OnBack;
+            DetailView.OnEdit += DetailView_OnEdit;
+            DetailView.LoadStudent(studentId);
+            ListView.Visibility = Visibility.Collapsed;
+            DetailView.Visibility = Visibility.Visible;
+        }
+
+        private void ShowList()
+        {
+            ListView.Visibility = Visibility.Visible;
+            DetailView.Visibility = Visibility.Collapsed;
+        }
+
+        private void DetailView_OnBack(object sender, EventArgs e)
+            => ShowList();
+
+        private void DetailView_OnEdit(object sender, int studentId)
+        {
+            var frm = new frmAddEditStudent(studentId);
+            frm.Owner = Window.GetWindow(this);
+            frm.ShowDialog();
+            if (frm.IsSaved)
+            {
+                LoadStudents();
+                ShowDetail(studentId);
+            }
         }
 
         private void UpdateColumns()
