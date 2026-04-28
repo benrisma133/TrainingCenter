@@ -3,15 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Name="Root">
 
-    <Border x:Name="CardBorder"
-            Background="{StaticResource CardBackgroundBrush}"
-            BorderBrush="{StaticResource BorderDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="12"
-            Padding="20"
-            Width="280"
-            Margin="8"
-            Cursor="Hand">
+	<Border x:Name="CardBorder"
+        Background="{StaticResource CardBackgroundBrush}"
+        BorderBrush="{StaticResource BorderDefaultBrush}"
+        BorderThickness="1"
+        CornerRadius="12"
+        Padding="20"
+        HorizontalAlignment="Stretch"
+        Margin="0"
+        Cursor="Hand">
 
         <Border.Effect>
             <DropShadowEffect Color="#000000" BlurRadius="15"

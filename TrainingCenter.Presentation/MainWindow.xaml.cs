@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using TrainingCenter.Presentation.Views;
 
 namespace TrainingCenter.Presentation
 {
@@ -175,7 +176,7 @@ namespace TrainingCenter.Presentation
         {
             SetActiveMenu(BtnStudents);
             PageTitle.Text = "Students";
-            PageContent.Content = null;
+            PageContent.Content = new StudentsPage();
         }
 
         private void BtnCourses_Click(object sender, RoutedEventArgs e)
