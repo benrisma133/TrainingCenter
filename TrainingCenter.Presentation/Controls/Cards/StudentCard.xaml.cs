@@ -10,6 +10,13 @@ namespace TrainingCenter.Presentation.Controls.Cards
     {
         public event EventHandler<int> OnEdit;
         public event EventHandler<int> OnDelete;
+        public event EventHandler<int> OnView;
+
+        private void CardBorder_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is System.Windows.Shapes.Path) return;
+            OnView?.Invoke(this, _studentId);
+        }
 
         private int _studentId;
 
