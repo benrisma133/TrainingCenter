@@ -120,14 +120,18 @@ namespace TrainingCenter.Presentation.Views
 
         private void AddStudentBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Will open frmAddEditStudent in next step
-            MessageBox.Show("Add Student form coming soon!", "TrainingCenter");
+            var frm = new frmAddEditStudent();
+            frm.Owner = Window.GetWindow(this);
+            frm.ShowDialog();
+            if (frm.IsSaved) LoadStudents();
         }
 
         private void Card_OnEdit(object sender, int studentId)
         {
-            // Will open frmAddEditStudent in Update mode
-            MessageBox.Show($"Edit student {studentId} coming soon!", "TrainingCenter");
+            var frm = new frmAddEditStudent(studentId);
+            frm.Owner = Window.GetWindow(this);
+            frm.ShowDialog();
+            if (frm.IsSaved) LoadStudents();
         }
 
         private void Card_OnDelete(object sender, int studentId)

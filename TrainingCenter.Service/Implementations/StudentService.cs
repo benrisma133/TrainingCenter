@@ -38,6 +38,16 @@ namespace TrainingCenter.Service.Implementations
         }
 
         // ======================================================
+        // Constructor (public) - Add mode
+        // ------------------------------------------------------
+        // Used when creating a new student from the form.
+        // ======================================================
+        public StudentService()
+        {
+            Mode = enMode.AddNew;
+        }
+
+        // ======================================================
         // _AddNew (private)
         // ------------------------------------------------------
         // Inserts a new student into the database.
