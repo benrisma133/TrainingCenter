@@ -183,7 +183,7 @@ namespace TrainingCenter.Presentation
         {
             SetActiveMenu(BtnCourses);
             PageTitle.Text = "Courses";
-            PageContent.Content = null;
+            PageContent.Content = new CoursesPage();
         }
 
         private void BtnInstructors_Click(object sender, RoutedEventArgs e)
