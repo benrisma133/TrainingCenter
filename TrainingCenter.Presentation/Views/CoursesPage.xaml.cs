@@ -90,18 +90,18 @@ namespace TrainingCenter.Presentation.Views
 
         private void AddCourseBtn_Click(object sender, RoutedEventArgs e)
         {
-            //var frm = new frmAddEditCourse();
-            //frm.Owner = Window.GetWindow(this);
-            //frm.ShowDialog();
-            //if (frm.IsSaved) LoadCourses();
+            var frm = new frmAddEditCourse();
+            frm.Owner = Window.GetWindow(this);
+            frm.ShowDialog();
+            if (frm.IsSaved) LoadCourses();
         }
 
         private void Card_OnEdit(int courseId)
         {
-            //var frm = new frmAddEditCourse(courseId);
-            //frm.Owner = Window.GetWindow(this);
-            //frm.ShowDialog();
-            //if (frm.IsSaved) LoadCourses();
+            var frm = new frmAddEditCourse(courseId);
+            frm.Owner = Window.GetWindow(this);
+            frm.ShowDialog();
+            if (frm.IsSaved) LoadCourses();
         }
 
         private void Card_OnDelete(int courseId)
@@ -141,14 +141,14 @@ namespace TrainingCenter.Presentation.Views
 
         private void DetailView_OnEdit(object sender, int courseId)
         {
-            //var frm = new frmAddEditCourse(courseId);
-            //frm.Owner = Window.GetWindow(this);
-            //frm.ShowDialog();
-            //if (frm.IsSaved)
-            //{
-            //    LoadCourses();
-            //    ShowDetail(courseId);
-            //}
+            var frm = new frmAddEditCourse(courseId);
+            frm.Owner = Window.GetWindow(this);
+            frm.ShowDialog();
+            if (frm.IsSaved)
+            {
+                LoadCourses();
+                ShowDetail(courseId);
+            }
         }
     }
 }

@@ -43,6 +43,11 @@ namespace TrainingCenter.Service.Implementations
             Mode = mode;
         }
 
+        public CourseService()
+        {
+            Mode = enMode.AddNew;
+        }
+
         // ======================================================
         // _AddNew (private)
         // ------------------------------------------------------
@@ -166,6 +171,16 @@ namespace TrainingCenter.Service.Implementations
             repo.Delete(courseId);
             repo.Save();
             return true;
+        }
+
+        // ======================================================
+        // IsExistByCode (public static)
+        // ======================================================
+        public static bool IsExistByCode(string code, int excludeId = 0)
+        {
+            using var context = DbContextFactory.Create();
+            var repo = new CourseRepository(context);
+            return repo.IsExistByCode(code, excludeId);
         }
     }
 }
