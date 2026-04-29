@@ -167,9 +167,7 @@
         </Grid>
 
         <!-- DETAIL VIEW -->
-        <!--
         <views:CourseDetailView x:Name="DetailView"
                                 Visibility="Collapsed"/>
-        -->
     </Grid>
 </UserControl>
